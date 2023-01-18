@@ -18,7 +18,7 @@ public class Menu {
 
     public void PlaceShips() {
 
-        String[] ships = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"};
+        String[] ships = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"}; //This might need to be a hashmap instead -- Mod 4
 
         for (int i = 0; i < ships.length; i++) { //Loop through each ship
             //Take in coordinate
