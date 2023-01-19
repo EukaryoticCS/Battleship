@@ -23,9 +23,17 @@ public class Menu {
 
         String[] ships = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"}; //This might need to be a hashmap instead -- Mod 4
         boolean shipBuilt;
-        char[][] board = new char[10][10];
 
         DisplayBoard(); //Will show an empty board
+
+        //For Testing
+//        BuildShip(new int[]{2, 2}, false, 5, 'C');
+//        BuildShip(new int[]{9, 5}, false, 4, 'B');
+//        BuildShip(new int[]{4, 6}, true, 3, 'R');
+//        BuildShip(new int[]{4, 8}, true, 3, 'S');
+//        BuildShip(new int[]{5, 4}, false, 2, 'D');
+
+        DisplayBoard();
 
         for (int i = 0; i < ships.length; i++) { //Loop through each ship
             do {
@@ -52,7 +60,9 @@ public class Menu {
                 //Take in 'V' or 'H', build ship accordingly
                 //"V" = true, "H" = false
 
-                shipBuilt = BuildShips(board, coordinate, vertical);
+                int shipLength = 5; //For testing
+                char shipChar = 'C'; //For testing
+                shipBuilt = BuildShip(coordinate, vertical, shipLength, shipChar);
                 if (!shipBuilt) {
                     System.out.println("That ship won't fit there! Try a different coordinate or direction.");
                 } else {
@@ -67,27 +77,59 @@ public class Menu {
         return true;
     }
 
-    public boolean BuildShips(char[][] board, int[] coordinate, boolean vertical) {
+    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar) {
         System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
-        //Do checks to make sure ship can fit -- G1a
-            //If so
-                //Go through and replace the board positions with corresponding ship letter, etc. -- G1b/Mod 4
-            //If not
-                //Return false
-        return true;
+        //Check for OOB
+        if (vertical) {
+            if (coordinate[0] + shipLength <= 10) {
+                for (int i = 0; i < shipLength; i++) {
+                    if (board[coordinate[0] + i][coordinate[1]] != '~') {
+                        System.out.println("Ship already there");
+                        return false;
+                    }
+                }
+                for (int i = 0; i < shipLength; i++) {
+                    board[coordinate[0] + i][coordinate[1]] = shipChar;
+                }
+                System.out.println("Ship built");
+                return true;
+            }
+        } else {
+            if (coordinate[1] + shipLength <= 10) {
+                for (int i = 0; i < shipLength; i++) { //Check for other ships in the way
+                    if (board[coordinate[0]][coordinate[1] + i] != '~') {
+                        System.out.println("Ship already there");
+                        return false;
+                    }
+                }
+                for (int i = 0; i < shipLength; i++) { //Build the ships
+                    board[coordinate[0]][coordinate[1] + i] = shipChar;
+                }
+                System.out.println("ship built");
+                return true;
+            }
+        }
+        System.out.println("Oob");
+        return false;
     }
 
     public void GameBoard(int columnSize, int rowSize) {
         this.rowSize = rowSize;
         this.columnSize = columnSize;
         board = new char[rowSize][columnSize];
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                board[row][col] = '~';
+            }
+        }
     }
 
     public void DisplayBoard() {
        for (int row = 0; row < board[0].length; row++) {
             System.out.print("| ");
             for(int column = 0; column < board[1].length; column++){
-                System.out.print(board[row][column] = '~');
+//                board[row][column] = '~';
+                System.out.print(board[row][column]);
                 System.out.print(" | ");
             }
             System.out.println();
