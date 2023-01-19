@@ -2,6 +2,9 @@ package View;
 
 public class Menu {
     MyInput input = new MyInput();
+    public static char[][] board;
+    private int rowSize;
+    private int columnSize;
     
     public static void welcome(){
         System.out.println(" Welcome to BattleShips");
@@ -22,7 +25,7 @@ public class Menu {
         boolean shipBuilt;
         char[][] board = new char[10][10];
 
-        DisplayBoard(board); //Will show an empty board
+        DisplayBoard(); //Will show an empty board
 
         for (int i = 0; i < ships.length; i++) { //Loop through each ship
             do {
@@ -53,7 +56,7 @@ public class Menu {
                 if (!shipBuilt) {
                     System.out.println("That ship won't fit there! Try a different coordinate or direction.");
                 } else {
-                    DisplayBoard(board); //Shows the player the board after placing the ship
+                    DisplayBoard(); //Shows the player the board after placing the ship
                 }
             } while (!shipBuilt);
         }
@@ -74,8 +77,21 @@ public class Menu {
         return true;
     }
 
-    public void DisplayBoard(char[][] board) {
-        // -- Mod 2
+    public void GameBoard(int columnSize, int rowSize) {
+        this.rowSize = rowSize;
+        this.columnSize = columnSize;
+        board = new char[rowSize][columnSize];
+    }
+
+    public void DisplayBoard() {
+       for (int row = 0; row < board[0].length; row++) {
+            System.out.print("| ");
+            for(int column = 0; column < board[1].length; column++){
+                System.out.print(board[row][column] = '~');
+                System.out.print(" | ");
+            }
+            System.out.println();
+        }
     }
 
 }
