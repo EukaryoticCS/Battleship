@@ -1,11 +1,16 @@
 package View;
 
-public class Ships {
+public class Ship {
 
     String shipName;
     char shipLetter;
     int shipLength;
 
+    public Ship(String shipName, char shipLetter, int shipLength) {
+        this.shipName = shipName;
+        this.shipLetter = shipLetter;
+        this.shipLength = shipLength;
+    }
 
     public String getShipName() {
         return shipName;
