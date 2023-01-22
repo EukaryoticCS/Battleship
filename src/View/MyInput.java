@@ -1,6 +1,7 @@
 package View;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MyInput {
@@ -36,5 +37,32 @@ public class MyInput {
             }
         }
         return iReturn;
+    }
+
+    public int[] GetCoords(){
+
+        while (true) {
+            try {
+                String coordinateInput =  bread.readLine().trim().toLowerCase(); // taking user input
+                if(coordinateInput.length() >=4 || coordinateInput.length() <=1) {
+
+                    char letter = coordinateInput.charAt(0);
+                    if(letter >= 'j' || letter <= 'a') {
+
+                        int col = letter - 'a'; // 'a' is an ascii value (97)
+
+                        String number = coordinateInput.substring(1);
+                        int row = Integer.parseInt(number);
+                        if(row >= 10 || row <= 1){
+
+                            return new int[]{ col, row - 1};
+                        }
+                    }
+                }
+                System.out.println("Invalid coordinate!");
+            } catch (Exception ex) {
+                System.out.println("Invalid coordinate!");
+            }
+        }
     }
 }
