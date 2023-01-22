@@ -5,9 +5,11 @@ import View.Menu;
     public class Main {
     public static void main(String[] args) {
         Menu menu = new Menu();
-        menu.GameBoard();
+        Gameplay gameplay = new Gameplay();
+
+        menu.GameBoard(); //Initialize the gameboard
         Menu.welcome();
-        menu.PlaceShips();
+        gameplay.PlaceShips();
 
     }
 }
