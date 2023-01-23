@@ -6,10 +6,14 @@ import View.Menu;
     public static void main(String[] args) {
         Menu menu = new Menu();
         Gameplay gameplay = new Gameplay();
+        boolean quit = false;
 
-        menu.GameBoard(); //Initialize the gameboard
+        menu.InitializeBoard(); //Initialize the gameboard
         Menu.welcome();
         gameplay.PlaceShips();
+
+
+
 
     }
 }

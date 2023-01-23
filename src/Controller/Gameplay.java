@@ -20,19 +20,6 @@ public class Gameplay {
             new Ship("Destroyer", 'D', 2)
     };
 
-    public void Attack(char[][] board, int[] coordinate) {
-
-//        do{
-//            if(!win){
-//                input.GetUserInt(){
-//
-//                }
-//
-//            }
-//
-//        }while(!win);
-    }
-
     public void PlaceShips() {
 
         boolean shipBuilt;
@@ -76,7 +63,7 @@ public class Gameplay {
         }
     }
 
-    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar,char[][] board) {
+    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
 //        System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
         if (vertical) {
             if (coordinate[0] + shipLength <= 10) {
@@ -112,11 +99,15 @@ public class Gameplay {
     }
 
     public static boolean HitShip(int[] coords) {
-        if(/*the coordinate hits something that isn't a tilde it has hit a ship*/ Menu.board[coords[0]][coords[1]] != '~'){ //if the board index at the coordinate is anything other than a tilde
+        /*the coordinate hits something that isn't a tilde it has hit a ship*/
+        //if the board index at the coordinate is anything other than a tilde
+        if (Menu.board[coords[0]][coords[1]] != '~') {
             return true;
         }
         return false;
     }
+
+
     public static boolean SunkShip(char shipChar) {
         for (int row = 0; row < Menu.board.length; row++) {
             for (int col = 0; col < Menu.board[0].length; col++) {
@@ -137,17 +128,34 @@ public class Gameplay {
     }
 
 
-    public void GamePlayLoop(){
+    public void GamePlayLoop() {
+        boolean quit;
+        boolean validInput;
+        do {
+            while (true) {
 
-        while (true) {
+                if (Menu.AttackingMenu()) { //Returns true if player won
+                    break;
+                }
+                if (AITurn()) { //Returns true if AI won
+                    break;
+                }
+            }
+            do
+            {
+                String playAgain = input.GetUserStr("Play again? (Y/N)", true);
+                validInput = playAgain.equals("Y") || playAgain.equals("N");
+                if (playAgain.equals("Y")) {
+                    //returns false to replay the game
+                    quit = false;
 
-            if (Menu.AttackingMenu()) { //Returns true if player won
-                break;
-            }
-            if (AITurn()) { //Returns true if AI won
-                break;
-            }
-        }
+                } else {
+                    //quit
+                    quit = true;
+                }
+
+            }while(!validInput);
+        } while (!quit);
     }
 
 }
