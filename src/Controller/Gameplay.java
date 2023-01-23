@@ -76,7 +76,7 @@ public class Gameplay {
         }
     }
 
-    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
+    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar,char[][] board) {
 //        System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
         if (vertical) {
             if (coordinate[0] + shipLength <= 10) {
