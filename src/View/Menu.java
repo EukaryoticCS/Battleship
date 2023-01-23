@@ -20,7 +20,7 @@ public class Menu {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 
-    public void GameBoard() {
+    public void InitializeBoard() {
         board = new char[10][10];
         aiBoard = new char[10][10];
         for (int row = 0; row < board.length; row++) {

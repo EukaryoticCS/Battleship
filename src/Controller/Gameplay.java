@@ -66,7 +66,9 @@ public class Gameplay {
         }
     }
 
+
     public static boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
+
 //        System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
         if (vertical) {
             if (coordinate[0] + shipLength <= 10) {
@@ -101,17 +103,21 @@ public class Gameplay {
         return false;
     }
 
+
     public static boolean HitShip(char[][] board, int[] coords) {
         if (/*the coordinate hits something that isn't a tilde it has hit a ship*/ board[coords[0]][coords[1]] != '~') { //if the board index at the coordinate is anything other than a tilde
+
             return true;
         }
         return false;
     }
 
+
     public static boolean SunkShip(char[][] board, char shipChar) {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {
                 if (board[row][col] == shipChar)
+
                     return false; //If it found any of the hit character
             }
         }
@@ -129,7 +135,6 @@ public class Gameplay {
 
     public static boolean AITurn() { //Very similar to PlayerTurn()
         char[] rows = new char[] {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-
         int[] coords;
         char shipChar;
         do {
@@ -164,16 +169,33 @@ public class Gameplay {
     }
 
     public void GamePlayLoop() {
+            boolean quit;
+            boolean validInput;
+            do {
+                while (true) {
 
-        while (true) {
+                if (Menu.PlayerTurn()) { //Returns true if player won
+                    break;
+                }
+                if (AITurn()) { //Returns true if AI won
+                    break;
+                }
+            }
+            do
+            {
+                String playAgain = input.GetUserStr("Play again? (Y/N)", true);
+                validInput = playAgain.equals("Y") || playAgain.equals("N");
+                if (playAgain.equals("Y")) {
+                    //returns false to replay the game
+                    quit = false;
 
-            if (Menu.PlayerTurn()) { //Returns true if player won
-                break;
-            }
-            if (AITurn()) { //Returns true if AI won
-                break;
-            }
-        }
+                } else {
+                    //quit
+                    quit = true;
+                }
+
+            }while(!validInput);
+        } while (!quit);
     }
 
 }
