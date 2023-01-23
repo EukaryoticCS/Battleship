@@ -80,9 +80,9 @@ public class Menu {
 
         } while (shipChar == 'X' || shipChar == 'O');
 
-        boolean HitShip = Gameplay.HitShip(coords);
+//        boolean HitShip = Gameplay.HitShip(coords);
 
-        if (HitShip) {
+        if (Gameplay.HitShip(coords)) {
             System.out.println("Hit!");
             board[coords[0]][coords[1]] = 'X';
             if (Gameplay.SunkShip(shipChar)) { //Check for sink
