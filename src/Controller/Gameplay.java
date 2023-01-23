@@ -11,9 +11,9 @@ public class Gameplay {
 
     static Random random = new Random();
 
-    MyInput input = new MyInput();
-    boolean win = false;
+    static MyInput input = new MyInput();
     public static int aiShipsSunk = 0;
+    public static int playerShipsSunk = 0;
 
     public static Ship[] ships = new Ship[]{
             new Ship("Carrier", 'C', 5),
@@ -23,20 +23,7 @@ public class Gameplay {
             new Ship("Destroyer", 'D', 2)
     };
 
-    public void Attack(char[][] board, int[] coordinate) {
-
-//        do{
-//            if(!win){
-//                input.GetUserInt(){
-//
-//                }
-//
-//            }
-//
-//        }while(!win);
-    }
-
-    public void PlaceShips() {
+    public static void PlaceShips() {
 
         boolean shipBuilt;
 
@@ -79,7 +66,7 @@ public class Gameplay {
         }
     }
 
-    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
+    public static boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
 //        System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
         if (vertical) {
             if (coordinate[0] + shipLength <= 10) {
@@ -114,17 +101,17 @@ public class Gameplay {
         return false;
     }
 
-    public static boolean HitShip(int[] coords) {
-        if (/*the coordinate hits something that isn't a tilde it has hit a ship*/ Menu.board[coords[0]][coords[1]] != '~') { //if the board index at the coordinate is anything other than a tilde
+    public static boolean HitShip(char[][] board, int[] coords) {
+        if (/*the coordinate hits something that isn't a tilde it has hit a ship*/ board[coords[0]][coords[1]] != '~') { //if the board index at the coordinate is anything other than a tilde
             return true;
         }
         return false;
     }
 
-    public static boolean SunkShip(char shipChar) {
-        for (int row = 0; row < Menu.board.length; row++) {
-            for (int col = 0; col < Menu.board[0].length; col++) {
-                if (Menu.board[row][col] == shipChar)
+    public static boolean SunkShip(char[][] board, char shipChar) {
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                if (board[row][col] == shipChar)
                     return false; //If it found any of the hit character
             }
         }
@@ -140,7 +127,9 @@ public class Gameplay {
         return null;
     }
 
-    public static boolean AITurn() {
+    public static boolean AITurn() { //Very similar to PlayerTurn()
+        char[] rows = new char[] {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+
         int[] coords;
         char shipChar;
         do {
@@ -149,25 +138,36 @@ public class Gameplay {
 
             coords = new int[]{row,col};
 
-            shipChar = Menu.aiBoard[coords[0]][coords[1]];
+            shipChar = Menu.board[coords[0]][coords[1]];
         } while (shipChar == 'X' || shipChar == 'O');
 
-        if (HitShip(coords)) {
+        System.out.printf("The AI attacks %c%d", rows[coords[0]],coords[1]);
 
-            System.out.println("AI hit your " + Gameplay.getShipNameFromChar(shipChar) + "!");
+        if (HitShip(Menu.board, coords)) {
+            System.out.println("The AI hit your " + getShipNameFromChar(shipChar) + "!");
+            Menu.board[coords[0]][coords[1]] = 'X';
+
+            if (SunkShip(Menu.board, shipChar)) { //Check for sink
+                System.out.println("The AI sunk your " + getShipNameFromChar(shipChar) + "!");
+                playerShipsSunk++;
+
+                if (playerShipsSunk == 5) { //Check for win
+                    System.out.println("How could you have lost, the AI was picking random spots!");
+                    return true;
+                }
+            }
         } else {
             System.out.println("The AI Missed!");
-            Menu.aiBoard[coords[0]][coords[1]] = 'O';
+            Menu.board[coords[0]][coords[1]] = 'O';
         }
         return true;
     }
-
 
     public void GamePlayLoop() {
 
         while (true) {
 
-            if (Menu.AttackingMenu()) { //Returns true if player won
+            if (Menu.PlayerTurn()) { //Returns true if player won
                 break;
             }
             if (AITurn()) { //Returns true if AI won
