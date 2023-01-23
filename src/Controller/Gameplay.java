@@ -4,7 +4,6 @@ import View.Menu;
 import View.MyInput;
 import Model.Ship;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Gameplay {
@@ -28,11 +27,11 @@ public class Gameplay {
         boolean shipBuilt;
 
         //For Testing
-        BuildShip(new int[]{2, 2}, false, 5, 'C', Menu.aiBoard); //C3, H
-        BuildShip(new int[]{9, 5}, false, 4, 'B', Menu.aiBoard); //J6, H
-        BuildShip(new int[]{4, 6}, true, 3, 'R', Menu.aiBoard); //E7, V
-        BuildShip(new int[]{4, 8}, true, 3, 'S', Menu.aiBoard); //E9, V
-        BuildShip(new int[]{5, 4}, false, 2, 'D', Menu.aiBoard); //F5, H
+//        BuildShip(new int[]{2, 2}, false, 5, 'C', Menu.aiBoard); //C3, H
+//        BuildShip(new int[]{9, 5}, false, 4, 'B', Menu.aiBoard); //J6, H
+//        BuildShip(new int[]{4, 6}, true, 3, 'R', Menu.aiBoard); //E7, V
+//        BuildShip(new int[]{4, 8}, true, 3, 'S', Menu.aiBoard); //E9, V
+//        BuildShip(new int[]{5, 4}, false, 2, 'D', Menu.aiBoard); //F5, H
 
         for (int i = 0; i < ships.length; i++) { //Loop through each ship
             do {
@@ -41,16 +40,16 @@ public class Gameplay {
                 //Take in coordinate
                 System.out.println("Where would you like to place your " + ships[i].getShipName() + "? Enter a coordinate (e.g. D5):");
                 int[] inputCoordinate = input.GetCoords();
-                System.out.println(Arrays.toString(inputCoordinate)); //For testing
+//                System.out.println(Arrays.toString(inputCoordinate)); //For testing
 
                 String inputDirectionStr;
                 boolean vertical = false;
                 do {
-                    inputDirectionStr = input.GetUserStr("Would you like to place that ship (V)ertically down or (H)orizontally right from that position?", true);
-                    System.out.println(inputDirectionStr);
-                } while (!(inputDirectionStr.equals("V") || inputDirectionStr.equals("H"))); //Validate "V" or "H"
+                    inputDirectionStr = input.GetUserStr("Would you like to place that ship (V)ertically down or (H)orizontally right from that position?", true).toLowerCase();
+//                    System.out.println(inputDirectionStr); //For testing
+                } while (!(inputDirectionStr.equals("v") || inputDirectionStr.equals("h"))); //Validate "V" or "H"
 
-                if (inputDirectionStr.equals("V")) {
+                if (inputDirectionStr.equals("v")) {
                     vertical = true;
                 } //Else false is implied
 
@@ -142,7 +141,7 @@ public class Gameplay {
 
         } while (shipChar == 'X' || shipChar == 'O');
 
-        System.out.printf("The AI attacks %c%d\n", rows[coords[0]], coords[1] + 1);
+        System.out.printf("The AI attacks %c%d\n", rows[coords[0]], coords[1] + 1); //Magic
 
 
         if (HitShip(Menu.playerBoard, coords)) {
@@ -167,7 +166,8 @@ public class Gameplay {
 
 
     public static void AIShipPlacing() {
-        int boatPlacement = random.nextInt(1, 5);
+        int boatPlacement = random.nextInt(1, 6);
+//        System.out.println(boatPlacement); //For testing
         switch (boatPlacement) {
             case 1:
                 Gameplay.BuildShip(new int[]{2, 2}, false, 5, 'C', Menu.aiBoard); //C3, H
@@ -179,9 +179,9 @@ public class Gameplay {
 
             case 2:
                 Gameplay.BuildShip(new int[]{2, 2}, true, 5, 'C', Menu.aiBoard); //C3, V
-                Gameplay.BuildShip(new int[]{7, 5}, true, 4, 'B', Menu.aiBoard); //H6, V
+                Gameplay.BuildShip(new int[]{6, 5}, true, 4, 'B', Menu.aiBoard); //G6, V
                 Gameplay.BuildShip(new int[]{4, 6}, false, 3, 'R', Menu.aiBoard); //E7, H
-                Gameplay.BuildShip(new int[]{4, 8}, false, 3, 'S', Menu.aiBoard); //E9, H
+                Gameplay.BuildShip(new int[]{6, 7}, true, 3, 'S', Menu.aiBoard); //G8, V
                 Gameplay.BuildShip(new int[]{5, 4}, true, 2, 'D', Menu.aiBoard); //F5, V
                 break;
 
@@ -215,8 +215,14 @@ public class Gameplay {
     public static void GamePlayLoop() {
         boolean quit;
         do {
+            //Reset the game on restart
+            aiShipsSunk = 0;
+            playerShipsSunk = 0;
             Menu.InitializeBoards();
+
+            AIShipPlacing(); //Place AI ships and player ships
             PlaceShips();
+
             boolean validInput;
             while (true) {
                 Menu.DisplayBoard();
@@ -228,9 +234,9 @@ public class Gameplay {
                 }
             }
             do {
-                String playAgain = input.GetUserStr("Play again? (Y/N)", true);
-                validInput = playAgain.equals("Y") || playAgain.equals("N");
-                if (playAgain.equals("Y")) {
+                String playAgain = input.GetUserStr("Play again? (Y/N)", true).toLowerCase();
+                validInput = playAgain.equals("y") || playAgain.equals("n");
+                if (playAgain.equals("y")) {
                     //returns false to replay the game
                     quit = false;
 
