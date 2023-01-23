@@ -43,5 +43,25 @@ public class Menu {
             System.out.println();
         }
     }
+    public void AttackingMenu(){
+        System.out.println("Attack what Coords?(Column,Row)");
+
+
+        int[] coords = new int[]{};
+        do{
+        coords = input.GetCoords();
+        if(board[coords[0]][coords[1]] == 'X' || board[coords[0]][coords[1]] == 'O'){
+            System.out.println("Already been attacked! Try a different spot!");
+        }
+        } while (board[coords[0]][coords[1]] == 'X' || board[coords[0]][coords[1]] == 'O');
+
+        boolean HitShip = Gameplay.HitShip(coords);
+        if (HitShip) {
+            System.out.println("Hit");
+        } else {
+            System.out.println("Miss");
+        }
+
+    }
 
 }

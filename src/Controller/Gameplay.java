@@ -111,4 +111,9 @@ public class Gameplay {
 //        System.out.println("Out of Bounds");
         return false;
     }
+       public static boolean HitShip(int[] coords){
+        //for dom
+        return true;
+    }
+
 }
