@@ -3,7 +3,7 @@ package View;
 import Controller.Gameplay;
 
 public class Menu {
-    MyInput input = new MyInput();
+    static MyInput input = new MyInput();
     Gameplay gameplay = new Gameplay();
     public static char[][] board;
     public static char[][] aiBoard;
@@ -64,7 +64,7 @@ public class Menu {
             System.out.println();
         }
     }
-    public boolean AttackingMenu(){ //Will return true if the player won this turn, false if not
+    public static boolean AttackingMenu(){ //Will return true if the player won this turn, false if not
         System.out.println("Attack what Coords?(Column,Row)");
 
         int[] coords;
