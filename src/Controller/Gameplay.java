@@ -5,8 +5,11 @@ import View.MyInput;
 import Model.Ship;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Gameplay {
+
+    static Random random = new Random();
 
     MyInput input = new MyInput();
     boolean win = false;
@@ -76,7 +79,7 @@ public class Gameplay {
         }
     }
 
-    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar,char[][] board) {
+    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
 //        System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
         if (vertical) {
             if (coordinate[0] + shipLength <= 10) {
@@ -112,11 +115,12 @@ public class Gameplay {
     }
 
     public static boolean HitShip(int[] coords) {
-        if(/*the coordinate hits something that isn't a tilde it has hit a ship*/ Menu.board[coords[0]][coords[1]] != '~'){ //if the board index at the coordinate is anything other than a tilde
+        if (/*the coordinate hits something that isn't a tilde it has hit a ship*/ Menu.board[coords[0]][coords[1]] != '~') { //if the board index at the coordinate is anything other than a tilde
             return true;
         }
         return false;
     }
+
     public static boolean SunkShip(char shipChar) {
         for (int row = 0; row < Menu.board.length; row++) {
             for (int col = 0; col < Menu.board[0].length; col++) {
@@ -136,8 +140,30 @@ public class Gameplay {
         return null;
     }
 
+    public static boolean AITurn() {
+        int[] coords;
+        char shipChar;
+        do {
+            int row = random.nextInt(0, 9);
+            int col = random.nextInt(0, 9);
 
-    public void GamePlayLoop(){
+            coords = new int[]{row,col};
+
+            shipChar = Menu.aiBoard[coords[0]][coords[1]];
+        } while (shipChar == 'X' || shipChar == 'O');
+
+        if (HitShip(coords)) {
+
+            System.out.println("AI hit your " + Gameplay.getShipNameFromChar(shipChar) + "!");
+        } else {
+            System.out.println("The AI Missed!");
+            Menu.aiBoard[coords[0]][coords[1]] = 'O';
+        }
+        return true;
+    }
+
+
+    public void GamePlayLoop() {
 
         while (true) {
 
