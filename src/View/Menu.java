@@ -43,25 +43,40 @@ public class Menu {
             System.out.println();
         }
     }
-    public void AttackingMenu(){
+    public boolean AttackingMenu(){ //Will return true if the player won this turn, false if not
         System.out.println("Attack what Coords?(Column,Row)");
 
+        int[] coords;
+        char shipChar;
 
-        int[] coords = new int[]{};
         do{
         coords = input.GetCoords();
-        if(board[coords[0]][coords[1]] == 'X' || board[coords[0]][coords[1]] == 'O'){
-            System.out.println("Already been attacked! Try a different spot!");
+        shipChar = board[coords[0]][coords[1]];
+
+        if(shipChar == 'X' || shipChar == 'O'){
+            System.out.println("That coordinate has already been attacked! Try a different spot!");
         }
-        } while (board[coords[0]][coords[1]] == 'X' || board[coords[0]][coords[1]] == 'O');
+
+        } while (shipChar == 'X' || shipChar == 'O');
 
         boolean HitShip = Gameplay.HitShip(coords);
+
         if (HitShip) {
-            System.out.println("Hit");
+            System.out.println("Hit!");
+            board[coords[0]][coords[1]] = 'X';
+            if (Gameplay.SunkShip(shipChar)) { //Check for sink
+                System.out.println("You sunk their " + Gameplay.getShipNameFromChar(shipChar) + "!"); //"You sunk their Battleship!"
+                Gameplay.aiShipsSunk++;
+
+                if (Gameplay.aiShipsSunk == 5) { //Check for win
+                    System.out.println("You win!");
+                    return true;
+                }
+            }
         } else {
             System.out.println("Miss");
+            board[coords[0]][coords[1]] = 'O';
         }
-
+        return false;
     }
-
 }

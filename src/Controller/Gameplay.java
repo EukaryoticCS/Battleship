@@ -2,18 +2,25 @@ package Controller;
 
 import View.Menu;
 import View.MyInput;
-import View.Ship;
+import Model.Ship;
 
 import java.util.Arrays;
 
 public class Gameplay {
 
     MyInput input = new MyInput();
-
     boolean win = false;
+    public static int aiShipsSunk = 0;
 
-    public void Attack(char[][] board, int[] coordinate)
-    {
+    public static Ship[] ships = new Ship[]{
+            new Ship("Carrier", 'C', 5),
+            new Ship("Battleship", 'B', 4),
+            new Ship("Cruiser", 'R', 3),
+            new Ship("Submarine", 'S', 3),
+            new Ship("Destroyer", 'D', 2)
+    };
+
+    public void Attack(char[][] board, int[] coordinate) {
 
 //        do{
 //            if(!win){
@@ -27,14 +34,6 @@ public class Gameplay {
     }
 
     public void PlaceShips() {
-
-        Ship[] ships = new Ship[] {
-                new Ship("Carrier", 'C', 5),
-                new Ship("Battleship", 'B', 4),
-                new Ship("Cruiser", 'R', 3),
-                new Ship("Submarine", 'S', 3),
-                new Ship("Destroyer", 'D', 2)
-        };
 
         boolean shipBuilt;
 
@@ -77,7 +76,7 @@ public class Gameplay {
         }
     }
 
-    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar,char[][] board) {
+    public boolean BuildShip(int[] coordinate, boolean vertical, int shipLength, char shipChar, char[][] board) {
 //        System.out.println("coordinate: (" + coordinate[0] + ", " + coordinate[1] + ") vertical: " + vertical);
         if (vertical) {
             if (coordinate[0] + shipLength <= 10) {
@@ -111,9 +110,28 @@ public class Gameplay {
 //        System.out.println("Out of Bounds");
         return false;
     }
-       public static boolean HitShip(int[] coords){
+
+    public static boolean HitShip(int[] coords) {
         //for dom
         return true;
+    }
+    public static boolean SunkShip(char shipChar) {
+        for (int row = 0; row < Menu.board.length; row++) {
+            for (int col = 0; col < Menu.board[0].length; col++) {
+                if (Menu.board[row][col] == shipChar)
+                    return false; //If it found any of the hit character
+            }
+        }
+        return true; //If it did not find any, it will return true: the ship was sunk
+    }
+
+    public static String getShipNameFromChar(char shipChar) {
+        for (int i = 0; i < ships.length; i++) {
+            if (ships[i].getShipLetter() == shipChar) {
+                return ships[i].getShipName();
+            }
+        }
+        return null;
     }
 
 }
