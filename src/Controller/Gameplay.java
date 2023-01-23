@@ -136,4 +136,18 @@ public class Gameplay {
         return null;
     }
 
+
+    public void GamePlayLoop(){
+
+        while (true) {
+
+            if (Menu.AttackingMenu()) { //Returns true if player won
+                break;
+            }
+            if (AITurn()) { //Returns true if AI won
+                break;
+            }
+        }
+    }
+
 }
