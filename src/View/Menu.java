@@ -4,11 +4,8 @@ import Controller.Gameplay;
 
 public class Menu {
     static MyInput input = new MyInput();
-    Gameplay gameplay = new Gameplay();
     public static char[][] board;
     public static char[][] aiBoard;
-
-
 
     public static void welcome() {
         System.out.println(" Welcome to BattleShips");
@@ -33,7 +30,6 @@ public class Menu {
             }
         }
     }
-
 
     public static void DisplayBoard() {
         // make a temp board that replaces all the ship letters with ~s and display the boards side by side with players hits and misses on them
@@ -64,15 +60,16 @@ public class Menu {
             System.out.println();
         }
     }
-    public static boolean AttackingMenu(){ //Will return true if the player won this turn, false if not
-        System.out.println("Attack what Coords?(Column,Row)");
+
+    public static boolean PlayerTurn(){ //Will return true if the player won this turn, false if not
+        System.out.println("Attack what coordinates? (Column,Row)");
 
         int[] coords;
         char shipChar;
 
         do{
         coords = input.GetCoords();
-        shipChar = board[coords[0]][coords[1]];
+        shipChar = aiBoard[coords[0]][coords[1]];
 
         if(shipChar == 'X' || shipChar == 'O'){
             System.out.println("That coordinate has already been attacked! Try a different spot!");
@@ -80,23 +77,21 @@ public class Menu {
 
         } while (shipChar == 'X' || shipChar == 'O');
 
-//        boolean HitShip = Gameplay.HitShip(coords);
-
-        if (Gameplay.HitShip(coords)) {
+        if (Gameplay.HitShip(aiBoard, coords)) {
             System.out.println("Hit!");
-            board[coords[0]][coords[1]] = 'X';
-            if (Gameplay.SunkShip(shipChar)) { //Check for sink
+            aiBoard[coords[0]][coords[1]] = 'X';
+            if (Gameplay.SunkShip(aiBoard, shipChar)) { //Check for sink
                 System.out.println("You sunk their " + Gameplay.getShipNameFromChar(shipChar) + "!"); //"You sunk their Battleship!"
                 Gameplay.aiShipsSunk++;
 
                 if (Gameplay.aiShipsSunk == 5) { //Check for win
-                    System.out.println("You win!");
+                    System.out.println("Congratulations! You beat your opponent in Battleship!");
                     return true;
                 }
             }
         } else {
             System.out.println("Miss");
-            board[coords[0]][coords[1]] = 'O';
+            aiBoard[coords[0]][coords[1]] = 'O';
         }
         return false;
     }
