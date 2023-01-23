@@ -2,7 +2,7 @@ package Controller;
 
 import View.Menu;
 
-    public class Main {
+public class Main {
     public static void main(String[] args) {
         Menu.welcome();
         Gameplay.GamePlayLoop();

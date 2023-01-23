@@ -7,6 +7,8 @@ public class Menu {
     public static char[][] playerBoard;
     public static char[][] aiBoard;
 
+    public static char[][] hiddenBoard;
+
     public static void welcome() {
         System.out.println(" Welcome to BattleShips");
 
@@ -23,10 +25,12 @@ public class Menu {
     public static void InitializeBoards() {
         playerBoard = new char[10][10];
         aiBoard = new char[10][10];
+        hiddenBoard = new char[10][10];
         for (int row = 0; row < playerBoard.length; row++) {
             for (int col = 0; col < playerBoard[0].length; col++) {
                 playerBoard[row][col] = '~';
                 aiBoard[row][col] = '~';
+                hiddenBoard[row][col] = '~';
             }
         }
     }
@@ -54,7 +58,7 @@ public class Menu {
             System.out.print(rowChars[row] + "| ");
             for (int column = 0; column < playerBoard[1].length; column++) {
 
-                System.out.print(aiBoard[row][column]);
+                System.out.print(hiddenBoard[row][column]);
                 System.out.print(" | ");
             }
             System.out.println();
@@ -62,7 +66,7 @@ public class Menu {
     }
 
     public static boolean PlayerTurn() { //Will return true if the player won this turn, false if not
-        System.out.println("Attack what coordinates? (Column,Row)");
+        System.out.println("Attack what coordinates? (Row, Column, e.g. C6)");
 
         int[] coords;
         char shipChar;
@@ -80,6 +84,7 @@ public class Menu {
         if (Gameplay.HitShip(aiBoard, coords)) {
             System.out.println("Hit!");
             aiBoard[coords[0]][coords[1]] = 'X';
+            hiddenBoard[coords[0]][coords[1]] = 'X';
 
             if (Gameplay.SunkShip(aiBoard, shipChar)) { //Check for sink
                 System.out.println("You sunk their " + Gameplay.getShipNameFromChar(shipChar) + "!"); //"You sunk their Battleship!"
@@ -93,6 +98,7 @@ public class Menu {
         } else {
             System.out.println("Miss");
             aiBoard[coords[0]][coords[1]] = 'O';
+            hiddenBoard[coords[0]][coords[1]] = 'O';
         }
         return false;
     }

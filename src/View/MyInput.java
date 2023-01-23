@@ -23,37 +23,22 @@ public class MyInput {
 
     }
 
-    public int GetUserInt(String prompt) {
-        int iReturn = 0;
-        boolean keepLooping = true;
-
-        while (keepLooping) {
-            try {
-                iReturn = Integer.parseInt(GetUserStr(prompt, true));
-                keepLooping = false;
-            } catch (Exception ex) {
-                System.out.println("Please input a valid integer");
-            }
-        }
-        return iReturn;
-    }
-
-    public int[] GetCoords(){
+    public int[] GetCoords() {
         while (true) {
             try {
-                String coordinateInput =  bread.readLine().trim().toLowerCase(); // taking user input
-                if(coordinateInput.length() <= 4 && coordinateInput.length() >= 1) {
+                String coordinateInput = bread.readLine().trim().toLowerCase(); // taking user input
+                if (coordinateInput.length() <= 4 && coordinateInput.length() >= 1) {
 
                     char letter = coordinateInput.charAt(0);
-                    if(letter <= 'j' && letter >= 'a') {
+                    if (letter <= 'j' && letter >= 'a') {
 
                         int col = letter - 'a'; // 'a' is an ascii value (97)
 
                         String number = coordinateInput.substring(1);
                         int row = Integer.parseInt(number);
-                        if(row <= 10 && row >= 1){
+                        if (row <= 10 && row >= 1) {
 
-                            return new int[]{ col, row - 1};
+                            return new int[]{col, row - 1};
                         }
                     }
                 }
