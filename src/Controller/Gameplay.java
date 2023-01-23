@@ -137,11 +137,13 @@ public class Gameplay {
             int col = random.nextInt(0, 9);
 
             coords = new int[]{row, col};
+
             shipChar = Menu.playerBoard[coords[0]][coords[1]];
 
         } while (shipChar == 'X' || shipChar == 'O');
 
         System.out.printf("The AI attacks %c%d\n", rows[coords[0]], coords[1] + 1);
+
 
         if (HitShip(Menu.playerBoard, coords)) {
             System.out.println("The AI hit your " + getShipNameFromChar(shipChar) + "!");
@@ -162,6 +164,53 @@ public class Gameplay {
         }
         return false;
     }
+
+
+    public static void AIShipPlacing() {
+        int boatPlacement = random.nextInt(1, 5);
+        switch (boatPlacement) {
+            case 1:
+                Gameplay.BuildShip(new int[]{2, 2}, false, 5, 'C', Menu.aiBoard); //C3, H
+                Gameplay.BuildShip(new int[]{9, 5}, false, 4, 'B', Menu.aiBoard); //J6, H
+                Gameplay.BuildShip(new int[]{4, 6}, true, 3, 'R', Menu.aiBoard); //E7, V
+                Gameplay.BuildShip(new int[]{4, 8}, true, 3, 'S', Menu.aiBoard); //E9, V
+                Gameplay.BuildShip(new int[]{5, 4}, false, 2, 'D', Menu.aiBoard); //F5, H
+                break;
+
+            case 2:
+                Gameplay.BuildShip(new int[]{2, 2}, true, 5, 'C', Menu.aiBoard); //C3, V
+                Gameplay.BuildShip(new int[]{7, 5}, true, 4, 'B', Menu.aiBoard); //H6, V
+                Gameplay.BuildShip(new int[]{4, 6}, false, 3, 'R', Menu.aiBoard); //E7, H
+                Gameplay.BuildShip(new int[]{4, 8}, false, 3, 'S', Menu.aiBoard); //E9, H
+                Gameplay.BuildShip(new int[]{5, 4}, true, 2, 'D', Menu.aiBoard); //F5, V
+                break;
+
+            case 3:
+                Gameplay.BuildShip(new int[]{1, 1}, true, 5, 'C', Menu.aiBoard); //B2, V
+                Gameplay.BuildShip(new int[]{1, 2}, true, 4, 'B', Menu.aiBoard); //B3, V
+                Gameplay.BuildShip(new int[]{1, 3}, true, 3, 'R', Menu.aiBoard); //B4, V
+                Gameplay.BuildShip(new int[]{1, 4}, true, 3, 'S', Menu.aiBoard); //B5, V
+                Gameplay.BuildShip(new int[]{1, 5}, true, 2, 'D', Menu.aiBoard); //B6, V
+                break;
+
+            case 4:
+                Gameplay.BuildShip(new int[]{3, 0}, false, 5, 'C', Menu.aiBoard); //D1, H
+                Gameplay.BuildShip(new int[]{4, 1}, false, 4, 'B', Menu.aiBoard); //E2, H
+                Gameplay.BuildShip(new int[]{5, 2}, false, 3, 'R', Menu.aiBoard); //F3, H
+                Gameplay.BuildShip(new int[]{6, 3}, false, 3, 'S', Menu.aiBoard); //G4, H
+                Gameplay.BuildShip(new int[]{8, 4}, false, 2, 'D', Menu.aiBoard); //H5, H
+                break;
+
+            case 5:
+                Gameplay.BuildShip(new int[]{2, 0}, true, 5, 'C', Menu.aiBoard); //C1, V
+                Gameplay.BuildShip(new int[]{6, 1}, false, 4, 'B', Menu.aiBoard); //F2, H
+                Gameplay.BuildShip(new int[]{2, 5}, false, 3, 'R', Menu.aiBoard); //C6, H
+                Gameplay.BuildShip(new int[]{9, 7}, false, 3, 'S', Menu.aiBoard); //J8, H
+                Gameplay.BuildShip(new int[]{5, 5}, true, 2, 'D', Menu.aiBoard); //F6, V
+                break;
+        }
+    }
+
 
     public static void GamePlayLoop() {
         boolean quit;
@@ -189,6 +238,7 @@ public class Gameplay {
                     //quit
                     quit = true;
                 }
+
             } while (!validInput);
         } while (!quit);
     }
