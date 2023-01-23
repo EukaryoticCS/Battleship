@@ -112,8 +112,10 @@ public class Gameplay {
     }
 
     public static boolean HitShip(int[] coords) {
-        //for dom
-        return true;
+        if(/*the coordinate hits something that isn't a tilde it has hit a ship*/ Menu.board[coords[0]][coords[1]] != '~'){ //if the board index at the coordinate is anything other than a tilde
+            return true;
+        }
+        return false;
     }
     public static boolean SunkShip(char shipChar) {
         for (int row = 0; row < Menu.board.length; row++) {
