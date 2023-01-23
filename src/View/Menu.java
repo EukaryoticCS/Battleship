@@ -4,7 +4,7 @@ import Controller.Gameplay;
 
 public class Menu {
     static MyInput input = new MyInput();
-    public static char[][] board;
+    public static char[][] playerBoard;
     public static char[][] aiBoard;
 
     public static void welcome() {
@@ -20,12 +20,12 @@ public class Menu {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 
-    public void InitializeBoard() {
-        board = new char[10][10];
+    public static void InitializeBoards() {
+        playerBoard = new char[10][10];
         aiBoard = new char[10][10];
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[0].length; col++) {
-                board[row][col] = '~';
+        for (int row = 0; row < playerBoard.length; row++) {
+            for (int col = 0; col < playerBoard[0].length; col++) {
+                playerBoard[row][col] = '~';
                 aiBoard[row][col] = '~';
             }
         }
@@ -34,25 +34,25 @@ public class Menu {
     public static void DisplayBoard() {
         // make a temp board that replaces all the ship letters with ~s and display the boards side by side with players hits and misses on them
 
-        char[] rowChars = new char[] {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'}; //For row labels
+        char[] rowChars = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'}; //For row labels
 
         System.out.print("   1   2   3   4   5   6   7   8   9   10");//Column labels
         System.out.print("     ");
         System.out.println("    1   2   3   4   5   6   7   8   9   10");//Column labels
 
-        for (int row = 0; row < board.length; row++) {
+        for (int row = 0; row < playerBoard.length; row++) {
             System.out.print(rowChars[row] + "| ");
 
 
-            for (int column = 0; column < board[1].length; column++) {
-                System.out.print(board[row][column]);
+            for (int column = 0; column < playerBoard[1].length; column++) {
+                System.out.print(playerBoard[row][column]);
                 System.out.print(" | ");
             }
 
 
             System.out.print("    ");
             System.out.print(rowChars[row] + "| ");
-            for (int column = 0; column < board[1].length; column++) {
+            for (int column = 0; column < playerBoard[1].length; column++) {
 
                 System.out.print(aiBoard[row][column]);
                 System.out.print(" | ");
@@ -61,25 +61,26 @@ public class Menu {
         }
     }
 
-    public static boolean PlayerTurn(){ //Will return true if the player won this turn, false if not
+    public static boolean PlayerTurn() { //Will return true if the player won this turn, false if not
         System.out.println("Attack what coordinates? (Column,Row)");
 
         int[] coords;
         char shipChar;
 
-        do{
-        coords = input.GetCoords();
-        shipChar = aiBoard[coords[0]][coords[1]];
+        do {
+            coords = input.GetCoords();
+            shipChar = aiBoard[coords[0]][coords[1]];
 
-        if(shipChar == 'X' || shipChar == 'O'){
-            System.out.println("That coordinate has already been attacked! Try a different spot!");
-        }
+            if (shipChar == 'X' || shipChar == 'O') {
+                System.out.println("That coordinate has already been attacked! Try a different spot!");
+            }
 
         } while (shipChar == 'X' || shipChar == 'O');
 
         if (Gameplay.HitShip(aiBoard, coords)) {
             System.out.println("Hit!");
             aiBoard[coords[0]][coords[1]] = 'X';
+
             if (Gameplay.SunkShip(aiBoard, shipChar)) { //Check for sink
                 System.out.println("You sunk their " + Gameplay.getShipNameFromChar(shipChar) + "!"); //"You sunk their Battleship!"
                 Gameplay.aiShipsSunk++;
